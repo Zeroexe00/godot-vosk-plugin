@@ -1,0 +1,17 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?link...
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "type": "lldb",
+          "request": "launch",
+          "preLaunchTask": "build",
+          "name": "Debug",
+          "program": "C:\\Users\\exe_6\\Desktop\\Godot_v4.3-stable_win64.exe",
+          "args": ["--path", "C:\\Users\\exe_6\\Desktop\\Proyectos Godot\\plugin-godot\\demoproject"],
+          "cwd": "${workspaceFolder}"
+      }
+  ]
+}

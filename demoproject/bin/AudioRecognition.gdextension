@@ -1,0 +1,32 @@
+[configuration]
+
+entry_symbol = "audio_recognition_init"
+compatibility_minimum = 4.3
+
+[libraries]
+windows.debug.x86_64 = "res://bin/windows/AudioRecognition.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://bin/windows/AudioRecognition.windows.template_debug.x86_64.dll"
+
+linux.release.single.x86_64 =""
+linux.debug.single.x86_64 =""
+
+linux.release.single.x86_32 =""
+linux.debug.single.x86_32 =""
+
+macos.release.single =""
+macos.debug.single =""
+
+ios.release.single =""
+ios.debug.single =""
+
+android.release.single.arm64 =""
+android.debug.single.arm64 =""
+
+android.release.single.arm32 =""
+android.debug.single.arm32 =""
+
+android.release.single.x86_64 =""
+android.debug.single.x86_64 =""
+
+android.release.single.x86_32 =""
+android.debug.single.x86_32 =""
