@@ -27,6 +27,11 @@ if env["platform"] == "macos":
         ),
         source=sources,
     )
+elif env["platform"] == "x11":
+    library = env.SharedLibrary(
+        "demoproject/bin/ubuntu-20-04/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        source=sources,
+    )
 else:
     library = env.SharedLibrary(
         "demoproject/bin/windows/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
