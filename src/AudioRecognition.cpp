@@ -32,6 +32,7 @@ void AudioRecognition::_bind_methods()
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "mix_rate"), "set_mix_rate", "get_mix_rate");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "model_path"), "set_model_folder_path", "get_model_folder_path");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "print_translation"), "set_print_translation", "get_print_translation");
+  ADD_SIGNAL(MethodInfo("final_translation", PropertyInfo(Variant::STRING, "final_translation_text")));
 }
 
 AudioRecognition::AudioRecognition()
@@ -151,7 +152,12 @@ void AudioRecognition::audio_recognition_from_bytes(const PackedByteArray audioB
     }
   }
   
-  this->translation = vosk_recognizer_final_result(recognizer);
+  const char *recognizedText = vosk_recognizer_final_result(recognizer);
+  Variant parsed_variant = JSON::parse_string(String(recognizedText));
+  Dictionary dict = parsed_variant;
+  this->translation = dict["text"];
+  emit_signal("final_translation", dict["text"]);
+
 
   // Clean up
   vosk_recognizer_free(recognizer);
