@@ -25,6 +25,7 @@ void AudioRecognition::_bind_methods()
 	ClassDB::bind_method(D_METHOD("set_mix_rate", "mix_rate"), &AudioRecognition::set_mix_rate);
   ClassDB::bind_method(D_METHOD("get_translation_result"), &AudioRecognition::get_translation_result);
   ClassDB::bind_method(D_METHOD("audio_recognition", "audioFile"), &AudioRecognition::audio_recognition);
+  ClassDB::bind_method(D_METHOD("audio_recognition_from_bytes", "audioFile"), &AudioRecognition::audio_recognition_from_bytes);
 
   ClassDB::add_property("AudioRecognition", PropertyInfo(Variant::STRING, "translation"), "", "get_translation_result");
 
@@ -103,6 +104,58 @@ void AudioRecognition::audio_recognition(String audioFile)
   vosk_recognizer_free(recognizer);
   vosk_model_free(model);
   wavin->close();
+}
+
+void AudioRecognition::audio_recognition_from_bytes(const PackedByteArray audioBytes)
+{
+  int buf = 3200;
+  const int header_offset = 44; // WAV header offset
+  int offset = header_offset;
+  int final;
+
+  String abs_model_path = ProjectSettings::get_singleton()->globalize_path(model_path);
+  VoskModel *model = vosk_model_new(abs_model_path.utf8().get_data());
+  if (!model)
+  {
+    UtilityFunctions::print("Error loading Vosk model!");
+    this->translation = "Error loading Vosk model!";
+    return;
+  }
+  VoskRecognizer *recognizer = vosk_recognizer_new(model, 1.0 * mix_rate);
+  if (!recognizer)
+  {
+    UtilityFunctions::print("Error creating Vosk recognizer!");
+    this->translation = "Error creating Vosk recognizer!";
+    vosk_model_free(model); // Clean up model
+    return;
+  }
+
+  while (offset < audioBytes.size())
+  {
+    int bytes_to_read = MIN(buf, audioBytes.size() - offset);
+
+    PackedByteArray bytes_read = audioBytes.slice(offset, offset + bytes_to_read);
+    
+    offset += bytes_to_read;
+    
+    int final = vosk_recognizer_accept_waveform(recognizer, reinterpret_cast<const char *>(bytes_read.ptr()), bytes_to_read);
+    if(print_translation) {
+      if (final)
+      {
+        UtilityFunctions::print(vosk_recognizer_result(recognizer));
+      }
+      else
+      {
+        UtilityFunctions::print(vosk_recognizer_partial_result(recognizer));
+      }
+    }
+  }
+  
+  this->translation = vosk_recognizer_final_result(recognizer);
+
+  // Clean up
+  vosk_recognizer_free(recognizer);
+  vosk_model_free(model);
 }
 
 String AudioRecognition::get_translation_result() const

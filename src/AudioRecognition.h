@@ -36,6 +36,7 @@ namespace godot {
       void set_mix_rate(int mix_rate);
 
       void audio_recognition(String audioFile);
+      void audio_recognition_from_bytes(const PackedByteArray audioBytes);
 
   };
 }
