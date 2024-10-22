@@ -16,7 +16,10 @@ env = SConscript("godot-cpp/SConstruct")
 env.Append(CPPPATH=["src/"])
 env.Append(LIBPATH=['./src'])
 #scons removes libprefix in windows
-env.Append(LIBS=['liblibvosk'])
+if env["platform"] == "windows":
+    env.Append(LIBS=['liblibvosk'])
+else:
+    env.Append(LIBS=['vosk'])
 # env.Append(LINKFLAGS=['-llibvosk'])
 sources = Glob("src/*.cpp")
 
@@ -27,15 +30,16 @@ if env["platform"] == "macos":
         ),
         source=sources,
     )
-elif env["platform"] == "x11":
-    library = env.SharedLibrary(
-        "demoproject/bin/ubuntu-20-04/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
-        source=sources,
-    )
 else:
-    library = env.SharedLibrary(
-        "demoproject/bin/windows/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
-        source=sources,
-    )
+    if env["platform"] == "windows":
+        library = env.SharedLibrary(
+            "demoproject/bin/windows/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+            source=sources,
+        )
+    else:
+        library = env.SharedLibrary(
+            "demoproject/bin/ubuntu-20-04/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+            source=sources,
+        )
 
 Default(library)
