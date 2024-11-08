@@ -45,9 +45,9 @@ AudioRecognition::~AudioRecognition()
 }
 
 
-void AudioRecognition::audio_recognition(String audioFile)
+void AudioRecognition::audio_recognition(String audioFilePath)
 {
-  Ref<FileAccess> wavin = FileAccess::open(audioFile, FileAccess::READ);
+  Ref<FileAccess> wavin = FileAccess::open(audioFilePath, FileAccess::READ);
   
   Error open_err = wavin->get_open_error();
   if (open_err != OK)
