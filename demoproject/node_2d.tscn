@@ -6,7 +6,9 @@
 script = ExtResource("1_m388m")
 
 [node name="AudioRecognition" type="AudioRecognition" parent="."]
+mix_rate = 16000
 model_path = "res://bin/model"
+print_translation = true
 
 [node name="Label" type="Label" parent="."]
 offset_left = 120.0
