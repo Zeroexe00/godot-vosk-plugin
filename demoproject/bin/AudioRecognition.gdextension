@@ -7,8 +7,8 @@ compatibility_minimum = 4.3
 windows.debug.x86_64 = "res://bin/windows/AudioRecognition.windows.template_debug.x86_64.dll"
 windows.release.x86_64 = "res://bin/windows/AudioRecognition.windows.template_debug.x86_64.dll"
 
-linux.release.single.x86_64 =""
-linux.debug.single.x86_64 =""
+linux.release.single.x86_64 ="res://bin/ubuntu-20-04/libAudioRecognition.linux.template_debug.x86_64.so"
+linux.debug.single.x86_64 ="res://bin/ubuntu-20-04/libAudioRecognition.linux.template_debug.x86_64.so"
 
 linux.release.single.x86_32 =""
 linux.debug.single.x86_32 =""

@@ -69,6 +69,7 @@ void AudioRecognition::audio_recognition(String audioFile)
     return;
   }
   VoskRecognizer *recognizer = vosk_recognizer_new(model, 1.0 * mix_rate);
+  UtilityFunctions::print(recognizer);
   if (!recognizer)
   {
     UtilityFunctions::print("Error creating Vosk recognizer!");
@@ -78,6 +79,7 @@ void AudioRecognition::audio_recognition(String audioFile)
   }
   wavin->seek(44); // Skip the WAV header
 
+  UtilityFunctions::print(buf.size());
   while (true)
   {
     int bytes_read = wavin->get_buffer(reinterpret_cast<uint8_t *>(buf.data()), buf.size());
