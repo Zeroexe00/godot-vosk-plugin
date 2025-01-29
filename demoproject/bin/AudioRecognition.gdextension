@@ -19,8 +19,8 @@ macos.debug.single =""
 ios.release.single =""
 ios.debug.single =""
 
-android.release.single.arm64 =""
-android.debug.single.arm64 =""
+android.release.single.arm64 ="res://bin/android/libAudioRecognition.android.template_debug.arm64.so"
+android.debug.single.arm64 ="res://bin/android/libAudioRecognition.android.template_debug.arm64.so" 
 
 android.release.single.arm32 =""
 android.debug.single.arm32 =""

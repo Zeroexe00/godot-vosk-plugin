@@ -38,7 +38,7 @@ else:
         )
     else:
         library = env.SharedLibrary(
-            "demoproject/bin/ubuntu-20-04/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+            "demoproject/bin/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
             source=sources,
         )
 
