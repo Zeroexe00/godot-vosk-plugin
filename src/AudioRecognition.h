@@ -15,6 +15,7 @@ namespace godot {
       bool print_translation = false;
       String model_path;
       int mix_rate = 48000;
+      VoskModel *model = nullptr;
 
 
     protected:

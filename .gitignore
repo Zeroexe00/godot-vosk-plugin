@@ -1,6 +1,7 @@
 /godot-cpp
 /demoproject/.godot/
 /demoproject/android/
+/demoproject/model/
 /model/*
 add-linux-dependencies-install-script.tar.gz
 godot-add-linux-dependencies-install-script/

@@ -37,13 +37,16 @@ void AudioRecognition::_bind_methods()
 
 AudioRecognition::AudioRecognition()
 {
-  
 }
 
 AudioRecognition::~AudioRecognition()
 {
+  if (model) {
+    vosk_model_free(model);
+    model = nullptr;
+    UtilityFunctions::print("Vosk model freed.");
+  }
 }
-
 
 void AudioRecognition::audio_recognition(String audioFilePath)
 {
@@ -53,15 +56,15 @@ void AudioRecognition::audio_recognition(String audioFilePath)
   if (open_err != OK)
   {
     std::cerr << "Error opening file!\n";
-    this->translation = String::num_int64(int(open_err));
+    this->translation = String::num_int64(int(open_err)) + String(" Error en archivo");
     return;
   }
 
   std::vector<char> buf(3200); // Buffer for reading data
   int final;
 
-  String abs_model_path = ProjectSettings::get_singleton()->globalize_path(model_path);
-  VoskModel *model = vosk_model_new(abs_model_path.utf8().get_data());
+  // String abs_model_path = ProjectSettings::get_singleton()->globalize_path(model_path);
+  // VoskModel *model = vosk_model_new(abs_model_path.utf8().get_data());
   if (!model)
   {
     UtilityFunctions::print("Error loading Vosk model!");
@@ -105,10 +108,11 @@ void AudioRecognition::audio_recognition(String audioFilePath)
 
   // Clean up
   vosk_recognizer_free(recognizer);
-  vosk_model_free(model);
+  // vosk_model_free(model);
   wavin->close();
 }
 
+// improve this function for better performance
 void AudioRecognition::audio_recognition_from_bytes(const PackedByteArray audioBytes)
 {
   int buf = 3200;
@@ -116,13 +120,19 @@ void AudioRecognition::audio_recognition_from_bytes(const PackedByteArray audioB
   int offset = header_offset;
   int final;
 
-  String abs_model_path = ProjectSettings::get_singleton()->globalize_path(model_path);
-  VoskModel *model = vosk_model_new(abs_model_path.utf8().get_data());
+  // String abs_model_path = ProjectSettings::get_singleton()->globalize_path(model_path);
+  // VoskModel *model = vosk_model_new(abs_model_path.utf8().get_data());
   if (!model)
   {
-    UtilityFunctions::print("Error loading Vosk model!");
-    this->translation = "Error loading Vosk model!";
-    return;
+    String abs_model_path = ProjectSettings::get_singleton()->globalize_path(model_path);
+    model = vosk_model_new(abs_model_path.utf8().get_data());
+    if (!model) {
+      UtilityFunctions::print("Error loading Vosk model!");
+      this->translation = "";
+      return;
+    } else {
+      UtilityFunctions::print("Vosk model loaded.");
+    }
   }
   VoskRecognizer *recognizer = vosk_recognizer_new(model, 1.0 * mix_rate);
   if (!recognizer)
@@ -163,7 +173,7 @@ void AudioRecognition::audio_recognition_from_bytes(const PackedByteArray audioB
 
   // Clean up
   vosk_recognizer_free(recognizer);
-  vosk_model_free(model);
+  // vosk_model_free(model);
 }
 
 String AudioRecognition::get_translation_result() const

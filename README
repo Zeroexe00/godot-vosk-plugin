@@ -1,0 +1,4 @@
+compile command
+platform plataforma ala que va generada
+j cantidad de cores del procesador que puede usar scons
+scons platform=<platform> -j7
