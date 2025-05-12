@@ -3,6 +3,7 @@
 
 
 #include <godot_cpp/classes/node.hpp>
+#include <vosk_api.h>
 
 
 namespace godot {
@@ -16,6 +17,8 @@ namespace godot {
       String model_path;
       int mix_rate = 48000;
       VoskModel *model = nullptr;
+      bool is_error = false;
+      String error_message;
 
 
     protected:
@@ -26,6 +29,9 @@ namespace godot {
       ~AudioRecognition();
 
       String get_translation_result() const;
+
+      bool get_is_error() const;
+      String get_error_message() const;
 
       bool get_print_translation() const;
       void set_print_translation(const bool p_print_translation);

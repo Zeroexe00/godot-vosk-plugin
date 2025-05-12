@@ -17,7 +17,7 @@ env.Append(CPPPATH=["src/"])
 env.Append(LIBPATH=['./src'])
 #scons removes libprefix in windows
 if env["platform"] == "windows":
-    env.Append(LIBS=['liblibvosk'])
+    env.Append(LIBS=['libvosk'])
 else:
     env.Append(LIBS=['vosk'])
 # env.Append(LINKFLAGS=['-llibvosk'])
