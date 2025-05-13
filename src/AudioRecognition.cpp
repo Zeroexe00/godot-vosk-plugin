@@ -189,8 +189,6 @@ void AudioRecognition::audio_recognition_from_bytes(const PackedByteArray audioB
 
     offset += bytes_to_read;
 
-    UtilityFunctions::print("valores ", offset,";", final,";", bytes_to_read);
-
     if (print_translation)
     {
       if (final)
