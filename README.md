@@ -21,12 +21,20 @@ El proyecto de ejemplo contiene:
    - Un nodo AudioRecognition que maneja la configuración y procesamiento del audio.
 
 
-### Versiones compatibles:
+### Versiones de Godot compatibles:
 | Version | Compatibility |
 | ------ | --- |
 | 4.3  | ✅ |
 | 4.4  | ✅ |
 | 4.4.1  | ✅ |
+
+### Plataformas compatibles:
+| Plataforma | Compatibility |
+| ------ | --- |
+| Windows 10/11  | ✅ |
+| Linux  | ✅ |
+| Android  | ✅ |
+| Macos  | ❌ |
 
 ### Compilación
 Este modulo necesita compilarse junto con el submodulo godot-cpp usando la herramiento SCons. Ademas
@@ -37,5 +45,5 @@ es necesario seguir estas instrucciones para poder compilar el plugin y esa func
 ```
 scons -j<hilos> platform=<platforma>
 ```
-- platform=<platform>: Plataforma a la que necesitamos la compilación
-- -j<hilos>: Cantidad de hilos que puede usar SCons para la compilacion (opcional)
+- ```platform=<platform>```: Plataforma a la que necesitamos la compilación
+- ```-j<hilos>```: Cantidad de hilos que puede usar SCons para la compilacion (opcional)
