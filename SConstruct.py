@@ -16,11 +16,18 @@ env = SConscript("godot-cpp/SConstruct")
 env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.cpp")
 
+if env["target"] in ["editor", "template_debug"]:
+    try:
+        doc_data = env.GodotCPPDocData("src/gen/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
+        sources.append(doc_data)
+    except AttributeError:
+        print("Not including class reference as we're targeting a pre-4.3 baseline.")
+
 if env["platform"] == "macos":
     env.Append(LIBPATH=['./src/macos'])
     env.Append(LIBS=['vosk'])
     library = env.SharedLibrary(
-        "demoproject/bin/AudioRecognition.{}.{}.framework/helloWorld.{}.{}".format(
+        "demo_project/bin/AudioRecognition.{}.{}.framework/helloWorld.{}.{}".format(
             env["platform"], env["target"], env["platform"], env["target"]
         ),
         source=sources,
@@ -30,29 +37,31 @@ elif env["platform"] == "windows":
     #scons removes libprefix in windows
     env.Append(LIBS=['libvosk'])
     library = env.SharedLibrary(
-            "demoproject/bin/windows/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+            "demo_project/bin/windows/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
             source=sources,
         )
 elif env["platform"] == "linux":
     env.Append(LIBPATH=['./src/linux'])
     env.Append(LIBS=['vosk'])
     library = env.SharedLibrary(
-        "demoproject/bin/linux/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "demo_project/bin/linux/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 elif env["platform"] == "android":
     env.Append(LIBPATH=['./src/android'])
     env.Append(LIBS=['vosk'])
     library = env.SharedLibrary(
-        "demoproject/bin/android/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "demo_project/bin/android/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 else:
     env.Append(LIBPATH=['./src/linux'])
     env.Append(LIBS=['vosk'])
     library = env.SharedLibrary(
-        "demoproject/bin/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "demo_project/bin/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
+
+
 
 Default(library)
