@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<class name="AudioRecognition" inherits="Node" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<class name="AudioRecognition" inherits="Node" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
 	</brief_description>
 	<description>
-	AudioRecognition is a node that provides audio recognition capabilities from a audio file (.WAV) or a packed byte array
-	like what you get when you record audio using the AudioStreamPlayer node
+		AudioRecognition is a node that provides audio recognition capabilities from a audio file (.WAV) or a packed byte array
+		like what you get when you record audio using the AudioStreamPlayer node
 	</description>
 	<tutorials>
 	</tutorials>
@@ -13,26 +14,26 @@
 			<return type="void" />
 			<param index="0" name="audioFile" type="String" />
 			<description>
-			Relative path to the audio file to be recognized.
+				Relative path to a audio file (.WAV) to be recognized.
 			</description>
 		</method>
 		<method name="audio_recognition_from_bytes">
 			<return type="void" />
 			<param index="0" name="audioFile" type="PackedByteArray" />
 			<description>
-			We can pass the audio file as a PackedByteArray.
+				We can pass the audio file as a PackedByteArray.
 			</description>
 		</method>
 		<method name="get_error_message" qualifiers="const">
 			<return type="String" />
 			<description>
-			This method returns the error message if there is an error when processing the audio.
+				This method returns the error message if there is an error when processing the audio.
 			</description>
 		</method>
 		<method name="get_is_error" qualifiers="const">
 			<return type="bool" />
 			<description>
-			This method returns true if there is an error when processing the audio.
+				This method returns true if there is an error when processing the audio.
 			</description>
 		</method>
 	</methods>
@@ -40,22 +41,24 @@
 		<member name="mix_rate" type="int" setter="set_mix_rate" getter="get_mix_rate" default="48000">
 			The mix rate of the audio file. This MUST match the mix rate of the audio.
 		</member>
-		<member name="model_path" type="String" setter="set_model_folder_path" getter="get_model_folder_path" default="&quot;&quot;">
+		<member name="model_path" type="String" setter="set_model_folder_path"
+			getter="get_model_folder_path" default="&quot;&quot;">
 			The path to the model folder. This must be a relative path to the project folder.
 		</member>
-		<member name="print_translation" type="bool" setter="set_print_translation" getter="get_print_translation" default="false">
+		<member name="print_translation" type="bool" setter="set_print_translation"
+			getter="get_print_translation" default="false">
 			If this is true, the translation will be printed to the console.
 		</member>
-		<member name="translation" type="String" setter="" getter="get_translation_result" default="&quot;&quot;">
+		<member name="translation" type="String" setter="" getter="get_translation_result"
+			default="&quot;&quot;">
 			This is the translation result. This will be empty if there is an error or the audio is silence.
 		</member>
 	</members>
 	<signals>
 		<signal name="final_translation">
 			<param index="0" name="final_translation_text" type="String" />
-			<return type="bool" />
 			<description>
-			Emitted when the final translation is available.
+				Emitted when the final translation is available.
 			</description>
 		</signal>
 	</signals>
