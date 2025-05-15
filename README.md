@@ -1,13 +1,21 @@
 # Godot Vosk Plugin
 
-## Introducción
 Este es un wrapper/plugin de VOSK para Godot usando GDExtension para hacerlo compatible con el lenguaje gscript. VOSK es un toolkit para el reconocimiento del habla permitiendonos procesar archivos de audio
 en formato WAV o tambien pudiendo usarlo para procesar audio capturado del microfono usando los modelos entrenados y disponibles en la misma pagina de VOSK.
 
 - [VOSK](https://alphacephei.com/vosk/)
 - [Modelos disponibles](https://alphacephei.com/vosk/models)  
 
+## Atajos
+- [Instalación](#instalacion)
+- [Proyecto de ejemplo](#proyecto-de-ejemplo)
+- [Compilación](#compilacion)
+
 ## Uso
+### Instalación
+Este plugin necesita como minimo la version 4.3 de Godot o superior. Copiar los contenidos de la carpeta addons en la carpeta addons de tu proyecto de godot
+
+
 ### Proyecto de ejemplo
 El proyecto de ejemplo contiene:
 - Una escena 2D con
@@ -28,6 +36,7 @@ El proyecto de ejemplo contiene:
 | 4.4  | ✅ |
 | 4.4.1  | ✅ |
 
+
 ### Plataformas compatibles:
 | Plataforma | Compatibility |
 | ------ | --- |
@@ -36,10 +45,12 @@ El proyecto de ejemplo contiene:
 | Android  | ✅ |
 | Macos  | ❌ |
 
+
 ### Compilación
 Este modulo necesita compilarse junto con el submodulo godot-cpp usando la herramiento SCons. Ademas
 es necesario seguir estas instrucciones para poder compilar el plugin y esa funcional en el editor de Godot
 [Guía de compilacion Godot](https://docs.godotengine.org/en/stable/contributing/development/compiling/index.html)
+
 
 ### Comando de compilacion:
 ```

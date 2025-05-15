@@ -1,0 +1,47 @@
+[configuration]
+
+entry_symbol = "audio_recognition_init"
+compatibility_minimum = 4.3
+
+
+[libraries]
+windows.debug.x86_64 = "res://addons/audio-recognition/windows/AudioRecognition.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://addons/audio-recognition/windows/AudioRecognition.windows.template_debug.x86_64.dll"
+
+linux.release.single.x86_64 ="res://addons/audio-recognition/linux/libAudioRecognition.linux.template_debug.x86_64.so"
+linux.debug.single.x86_64 ="res://addons/audio-recognition/linux/libAudioRecognition.linux.template_debug.x86_64.so"
+
+linux.release.single.x86_32 =""
+linux.debug.single.x86_32 =""
+
+macos.release.single =""
+macos.debug.single =""
+
+ios.release.single =""
+ios.debug.single =""
+
+android.release.single.arm64 ="res://addons/audio-recognition/android/libAudioRecognition.android.template_debug.arm64.so"
+android.debug.single.arm64 ="res://addons/audio-recognition/android/libAudioRecognition.android.template_debug.arm64.so" 
+
+android.release.single.arm32 =""
+android.debug.single.arm32 =""
+
+android.release.single.x86_64 =""
+android.debug.single.x86_64 =""
+
+android.release.single.x86_32 =""
+android.debug.single.x86_32 =""
+
+[dependencies]
+linux.debug = {
+    "res://bin/linux/libvosk.so" : ""
+}
+linux.release = {
+    "res://bin/linux/libvosk.so" : ""
+}
+android.arm64.debug = {
+    "res://bin/android/libvosk.so" : ""
+}
+android.arm64.release = {
+    "res://bin/android/libvosk.so" : ""
+}
