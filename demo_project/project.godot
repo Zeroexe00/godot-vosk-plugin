@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 driver/enable_input=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/audio_recognition/plugin.cfg")
+
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
