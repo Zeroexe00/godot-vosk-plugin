@@ -34,14 +34,14 @@ android.debug.single.x86_32 =""
 
 [dependencies]
 linux.debug = {
-    "res://bin/linux/libvosk.so" : ""
+    "res://addons/audio_recognition/linux/libvosk.so" : ""
 }
 linux.release = {
-    "res://bin/linux/libvosk.so" : ""
+    "res://addons/audio_recognition/linux/libvosk.so" : ""
 }
 android.arm64.debug = {
-    "res://bin/android/libvosk.so" : ""
+    "res://addons/audio_recognition/android/libvosk.so" : ""
 }
 android.arm64.release = {
-    "res://bin/android/libvosk.so" : ""
+    "res://addons/audio_recognition/android/libvosk.so" : ""
 }
