@@ -25,11 +25,10 @@ jobs:
           sudo apt install -y python3 python3-pip curl tar pkg-config
           pip install scons==4.8.1
 
-      - name: Download and extract Buildroot SDK for ${{ matrix.arch }}
+      - name: Download SDK and Build with SCons for ${{ matrix.arch }}
         run: |
           ARCH=${{ matrix.arch }}
 
-          # Fix: use proper SDK filename for 'arm'
           if [ "$ARCH" = "arm" ]; then
             SDK_FILE="arm-godot-linux-gnueabihf_sdk-buildroot.tar.bz2"
             SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
@@ -38,28 +37,27 @@ jobs:
             SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
           fi
 
-          SDK_URL="https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/$SDK_FILE"
-
-          curl -LO $SDK_URL
+          curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/$SDK_FILE
           tar xf $SDK_FILE
           rm -f $SDK_FILE
+
           cd $SDK_DIR
           ./relocate-sdk.sh
+          source environment-setup
+          cd $GITHUB_WORKSPACE
 
-      - name: Build with SCons for ${{ matrix.arch }}
-        run: |
-          ARCH=${{ matrix.arch }}
-          if [ "$ARCH" = "arm" ]; then
-            SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
-          else
-            SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
-          fi
+          # Crear carpeta de salida por arquitectura
+          OUTPUT_DIR=bin/linux/$ARCH
+          mkdir -p $OUTPUT_DIR
 
-          source $SDK_DIR/environment-setup
+          # Compilar
           scons platform=linux target=template_release arch=$ARCH
+
+          # Mover binarios generados (*.so) al directorio correspondiente
+          find bin/ -maxdepth 1 -name "*.so" -exec mv {} $OUTPUT_DIR/ \;
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: gdextension-linux-${{ matrix.arch }}
-          path: release/
+          path: bin/linux/${{ matrix.arch }}/
