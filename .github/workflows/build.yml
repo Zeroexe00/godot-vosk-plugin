@@ -28,19 +28,34 @@ jobs:
       - name: Download and extract Buildroot SDK for ${{ matrix.arch }}
         run: |
           ARCH=${{ matrix.arch }}
-          SDK_FILE=${ARCH}-godot-linux-gnu_sdk-buildroot.tar.bz2
-          SDK_URL=https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/$SDK_FILE
+
+          # Fix: use proper SDK filename for 'arm'
+          if [ "$ARCH" = "arm" ]; then
+            SDK_FILE="arm-godot-linux-gnueabihf_sdk-buildroot.tar.bz2"
+            SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
+          else
+            SDK_FILE="${ARCH}-godot-linux-gnu_sdk-buildroot.tar.bz2"
+            SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
+          fi
+
+          SDK_URL="https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/$SDK_FILE"
 
           curl -LO $SDK_URL
           tar xf $SDK_FILE
           rm -f $SDK_FILE
-          cd ${ARCH}-godot-linux-gnu_sdk-buildroot
+          cd $SDK_DIR
           ./relocate-sdk.sh
 
       - name: Build with SCons for ${{ matrix.arch }}
         run: |
           ARCH=${{ matrix.arch }}
-          source ${ARCH}-godot-linux-gnu_sdk-buildroot/environment-setup
+          if [ "$ARCH" = "arm" ]; then
+            SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
+          else
+            SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
+          fi
+
+          source $SDK_DIR/environment-setup
           scons platform=linux target=template_release arch=$ARCH
 
       - name: Upload artifact
