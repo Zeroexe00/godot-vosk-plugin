@@ -27,7 +27,7 @@ if env["platform"] == "macos":
     env.Append(LIBPATH=['./src/macos'])
     env.Append(LIBS=['vosk'])
     library = env.SharedLibrary(
-        "demo_project/bin/AudioRecognition.{}.{}.framework/helloWorld.{}.{}".format(
+        "demo_project/addons/audio_recognition/macos/AudioRecognition.{}.{}.framework/helloWorld.{}.{}".format(
             env["platform"], env["target"], env["platform"], env["target"]
         ),
         source=sources,
@@ -37,28 +37,28 @@ elif env["platform"] == "windows":
     #scons removes libprefix in windows
     env.Append(LIBS=['libvosk'])
     library = env.SharedLibrary(
-            "demo_project/bin/windows/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+            "demo_project/addons/audio_recognition/windows/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
             source=sources,
         )
 elif env["platform"] == "linux":
     env.Append(LIBPATH=['./src/linux'])
     env.Append(LIBS=['vosk'])
     library = env.SharedLibrary(
-        "demo_project/bin/linux/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "demo_project/addons/audio_recognition/linux/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 elif env["platform"] == "android":
     env.Append(LIBPATH=['./src/android'])
     env.Append(LIBS=['vosk'])
     library = env.SharedLibrary(
-        "demo_project/bin/android/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "demo_project/addons/audio_recognition/android/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 else:
     env.Append(LIBPATH=['./src/linux'])
     env.Append(LIBS=['vosk'])
     library = env.SharedLibrary(
-        "demo_project/bin/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "demo_project/addons/audio_recognition/AudioRecognition{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 
