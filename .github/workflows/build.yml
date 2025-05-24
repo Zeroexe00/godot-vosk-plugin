@@ -1,0 +1,50 @@
+name: Build GDExtension for Linux (multi-arch)
+
+on:
+  push:
+    branches: [release]
+
+jobs:
+  build-multiarch:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch:
+          - x86_64
+          - i686
+          - aarch64
+          - arm
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y python3 python3-pip curl tar pkg-config
+          pip install scons==4.8.1
+
+      - name: Download and extract Buildroot SDK for ${{ matrix.arch }}
+        run: |
+          ARCH=${{ matrix.arch }}
+          SDK_FILE=${ARCH}-godot-linux-gnu_sdk-buildroot.tar.bz2
+          SDK_URL=https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/$SDK_FILE
+
+          curl -LO $SDK_URL
+          tar xf $SDK_FILE
+          rm -f $SDK_FILE
+          cd ${ARCH}-godot-linux-gnu_sdk-buildroot
+          ./relocate-sdk.sh
+
+      - name: Build with SCons for ${{ matrix.arch }}
+        run: |
+          ARCH=${{ matrix.arch }}
+          source ${ARCH}-godot-linux-gnu_sdk-buildroot/environment-setup
+          scons platform=linux target=template_release arch=$ARCH
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gdextension-linux-${{ matrix.arch }}
+          path: release/
