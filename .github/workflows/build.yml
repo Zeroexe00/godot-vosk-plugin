@@ -1,69 +1,70 @@
-name: Build GDExtension for Linux (multi-arch)
+name: Build Godot GDExtension Plugin
 
 on:
   push:
     branches: [release]
 
 jobs:
-  build-multiarch:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch:
-          - x86_64
-          - aarch64
-          - arm
+        arch: [x86_64, x86_32, arm64, arm32]
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
-        with:
-          submodules: recursive
 
       - name: Install dependencies
         run: |
-          sudo apt update
-          sudo apt install -y python3 python3-pip curl tar pkg-config
+          sudo dnf -y install --setopt=install_weak_deps=False \
+            bash binutils bzip2 curl file findutils gettext git make patch pkgconfig python3-pip unzip which xz dotnet-sdk-8.0
           pip install scons==4.8.1
 
-      - name: Download SDK and Build with SCons for ${{ matrix.arch }}
+      - name: Download Buildroot SDKs
         run: |
-          ARCH=${{ matrix.arch }}
-
-          if [ "$ARCH" = "arm" ]; then
-            SDK_FILE="arm-godot-linux-gnueabihf_sdk-buildroot.tar.bz2"
-            SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
-          else
-            SDK_FILE="${ARCH}-godot-linux-gnu_sdk-buildroot.tar.bz2"
-            SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
-          fi
-
-          curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/$SDK_FILE
-          tar xf $SDK_FILE
-          rm -f $SDK_FILE
-
-          cd $SDK_DIR
-          ./relocate-sdk.sh
           cd $GITHUB_WORKSPACE
+          case "${{ matrix.arch }}" in
+            x86_64)
+              SDK_URL="https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/x86_64-godot-linux-gnu_sdk-buildroot.tar.bz2"
+              SDK_DIR="x86_64-godot-linux-gnu_sdk-buildroot"
+              ;;
+            x86_32)
+              SDK_URL="https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/i686-godot-linux-gnu_sdk-buildroot.tar.bz2"
+              SDK_DIR="i686-godot-linux-gnu_sdk-buildroot"
+              ;;
+            arm64)
+              SDK_URL="https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/aarch64-godot-linux-gnu_sdk-buildroot.tar.bz2"
+              SDK_DIR="aarch64-godot-linux-gnu_sdk-buildroot"
+              ;;
+            arm32)
+              SDK_URL="https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/armv7-godot-linux-gnueabihf_sdk-buildroot.tar.bz2"
+              SDK_DIR="armv7-godot-linux-gnueabihf_sdk-buildroot"
+              ;;
+            *)
+              echo "Unsupported architecture: ${{ matrix.arch }}"
+              exit 1
+              ;;
+          esac
 
-          # Crear carpeta de salida por arquitectura
-          OUTPUT_DIR=bin/linux/$ARCH
-          mkdir -p $OUTPUT_DIR
+          curl -LO "$SDK_URL"
+          tar xf $(basename "$SDK_URL")
+          rm -f $(basename "$SDK_URL")
+          cd "$SDK_DIR"
+          ./relocate-sdk.sh || true
+          echo "SDK_DIR=$GITHUB_WORKSPACE/$SDK_DIR" >> $GITHUB_ENV
 
-          # Compilar
-          if [ "$ARCH" = "aarch64" ]; then
-            scons platform=linux target=template_release arch=arm64
-          elif [ "$ARCH" = "arm" ]; then
-            scons platform=linux target=template_release arch=arm32
-          else
-            scons platform=linux target=template_release arch=$ARCH
-          fi
+      - name: Set up environment variables manually
+        run: |
+          echo "Adding toolchain to PATH..."
+          echo "$SDK_DIR/bin" >> $GITHUB_PATH
+          echo "CC=$(basename $SDK_DIR | cut -d'-' -f1)-gcc" >> $GITHUB_ENV
+          echo "CXX=$(basename $SDK_DIR | cut -d'-' -f1)-g++" >> $GITHUB_ENV
+          echo "AR=$(basename $SDK_DIR | cut -d'-' -f1)-ar" >> $GITHUB_ENV
+          echo "STRIP=$(basename $SDK_DIR | cut -d'-' -f1)-strip" >> $GITHUB_ENV
 
-          # Mover binarios generados (*.so) al directorio correspondiente
-          find bin/ -maxdepth 1 -name "*.so" -exec mv {} $OUTPUT_DIR/ \;
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: gdextension-linux-${{ matrix.arch }}
-          path: bin/linux/${{ matrix.arch }}/
+      - name: Build plugin
+        run: |
+          echo "Using compiler: $CC"
+          $CC --version || true
+          scons platform=linux target=template_release arch=${{ matrix.arch }}
