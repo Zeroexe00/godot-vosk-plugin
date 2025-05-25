@@ -42,8 +42,15 @@ jobs:
 
           cd $SDK_DIR
           ./relocate-sdk.sh
-          . ./environment-setup
+          export TOOLCHAIN_PREFIX=$(basename $SDK_DIR | cut -d'-' -f1)
+          export PATH="$GITHUB_WORKSPACE/$SDK_DIR/bin:$PATH"
+          export CC=${TOOLCHAIN_PREFIX}-gcc
+          export CXX=${TOOLCHAIN_PREFIX}-g++
+          export AR=${TOOLCHAIN_PREFIX}-ar
+          export STRIP=${TOOLCHAIN_PREFIX}-strip
           cd $GITHUB_WORKSPACE
+          ls -la "$SDK_DIR/environment-setup"
+          ls -la "$SDK_DIR/bin"
 
           # Crear carpeta de salida por arquitectura
           OUTPUT_DIR=bin/linux/$ARCH
