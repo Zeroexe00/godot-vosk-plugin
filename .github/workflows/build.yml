@@ -51,7 +51,13 @@ jobs:
           mkdir -p $OUTPUT_DIR
 
           # Compilar
-          scons platform=linux target=template_release arch=$ARCH
+          if [ "$ARCH" = "arm" ]; then
+            scons platform=linux target=template_release arch=arm64
+          elif [ "$ARCH" = "aarch64" ]; then
+            scons platform=linux target=template_release arch=arm32
+          else
+            scons platform=linux target=template_release arch=$ARCH
+          fi
 
           # Mover binarios generados (*.so) al directorio correspondiente
           find bin/ -maxdepth 1 -name "*.so" -exec mv {} $OUTPUT_DIR/ \;
