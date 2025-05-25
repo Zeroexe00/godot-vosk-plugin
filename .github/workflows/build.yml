@@ -51,9 +51,9 @@ jobs:
           mkdir -p $OUTPUT_DIR
 
           # Compilar
-          if [ "$ARCH" = "arm" ]; then
+          if [ "$ARCH" = "aarch64" ]; then
             scons platform=linux target=template_release arch=arm64
-          elif [ "$ARCH" = "aarch64" ]; then
+          elif [ "$ARCH" = "arm" ]; then
             scons platform=linux target=template_release arch=arm32
           else
             scons platform=linux target=template_release arch=$ARCH
