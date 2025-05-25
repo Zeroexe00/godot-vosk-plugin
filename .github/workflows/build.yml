@@ -43,7 +43,8 @@ jobs:
 
           cd $SDK_DIR
           ./relocate-sdk.sh
-          source environment-setup
+          SDK_PATH="$PWD"
+          source "$SDK_PATH/environment-setup"
           cd $GITHUB_WORKSPACE
 
           # Crear carpeta de salida por arquitectura
