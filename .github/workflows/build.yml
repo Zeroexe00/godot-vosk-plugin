@@ -45,6 +45,7 @@ jobs:
       - name: Build with SCons for ${{ matrix.arch }}
         run: |
           ARCH=${{ matrix.arch }}
+          ls -la
           if [ "$ARCH" = "arm" ]; then
             SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
             SDK_SUBMODULE_DIR="arm-godot-linux-gnueabihf"
