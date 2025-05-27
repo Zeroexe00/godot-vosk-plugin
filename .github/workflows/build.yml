@@ -34,7 +34,7 @@ jobs:
             SDK_FILE="${ARCH}-godot-linux-gnu_sdk-buildroot.tar.bz2"
             SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
           fi
-          curl -LO $SDK_URL
+          curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/$SDK_FILE
           tar xf $SDK_FILE
           rm -f $SDK_FILE
           cd ${SDK_DIR}
