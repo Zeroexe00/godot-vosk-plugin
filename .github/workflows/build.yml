@@ -45,16 +45,26 @@ jobs:
       - name: Build with SCons for ${{ matrix.arch }}
         run: |
           ARCH=${{ matrix.arch }}
+          GODOT_SDK_LINUX_X86_64=/${pwd}/x86_64-godot-linux-gnu_sdk-buildroot
+          GODOT_SDK_LINUX_X86_32=/${pwd}/i686-godot-linux-gnu_sdk-buildroot
+          GODOT_SDK_LINUX_ARM64=/${pwd}/aarch64-godot-linux-gnu_sdk-buildroot
+          GODOT_SDK_LINUX_ARM32=/${pwd}/arm-godot-linux-gnueabihf_sdk-buildroot
           ls -la
           if [ "$ARCH" = "arm" ]; then
             SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
             SDK_SUBMODULE_DIR="arm-godot-linux-gnueabihf_sdk-buildroot/arm-godot-linux-gnueabihf"
+            ARCH_GODOT="arm64"
+          elseif [ "$ARCH" = "aarch64" ]; then
+            SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
+            SDK_SUBMODULE_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot/${ARCH}-godot-linux-gnu"
+            ARCH_GODOT="x86_64"
           else
             SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
             SDK_SUBMODULE_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot/${ARCH}-godot-linux-gnu"
+            ARCH_GODOT="${ARCH}"
           fi
           pwd
-          scons platform=linux target=template_release arch=$ARCH
+          scons platform=linux target=template_release arch=$ARCH_GODOT
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
