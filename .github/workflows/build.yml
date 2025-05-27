@@ -11,8 +11,6 @@ jobs:
       matrix:
         arch:
           - x86_64
-          - aarch64
-          - arm
 
     steps:
       - name: Checkout repository
@@ -49,21 +47,7 @@ jobs:
           GODOT_SDK_LINUX_X86_32=/${pwd}/i686-godot-linux-gnu_sdk-buildroot
           GODOT_SDK_LINUX_ARM64=/${pwd}/aarch64-godot-linux-gnu_sdk-buildroot
           GODOT_SDK_LINUX_ARM32=/${pwd}/arm-godot-linux-gnueabihf_sdk-buildroot
-          if [ "$ARCH" = "arm" ]; then
-            SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
-            SDK_SUBMODULE_DIR="arm-godot-linux-gnueabihf_sdk-buildroot/arm-godot-linux-gnueabihf"
-            ARCH_GODOT="arm64"
-          elif [ "$ARCH" = "aarch64" ]; then
-            SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
-            SDK_SUBMODULE_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot/${ARCH}-godot-linux-gnu"
-            ARCH_GODOT="x86_64"
-          else
-            SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
-            SDK_SUBMODULE_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot/${ARCH}-godot-linux-gnu"
-            ARCH_GODOT="${ARCH}"
-          fi
-          ls -la
-          scons platform=linux target=template_release arch=$ARCH_GODOT
+          scons platform=linux target=template_release arch=$ARCH
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
