@@ -55,6 +55,7 @@ jobs:
           fi
           cd ${SDK_SUBMODULE_DIR}
           ls -la
+          pwd
           # source ${SDK_DIR}/environment-setup
           scons platform=linux target=template_release arch=$ARCH
 
