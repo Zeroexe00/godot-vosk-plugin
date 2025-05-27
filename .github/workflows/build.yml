@@ -53,10 +53,7 @@ jobs:
             SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
             SDK_SUBMODULE_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot/${ARCH}-godot-linux-gnu"
           fi
-          cd ${SDK_SUBMODULE_DIR}
-          ls -la
           pwd
-          # source ${SDK_DIR}/environment-setup
           scons platform=linux target=template_release arch=$ARCH
 
       - name: Upload artifact
