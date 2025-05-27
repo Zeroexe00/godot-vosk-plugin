@@ -53,4 +53,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gdextension-linux-${{ matrix.arch }}
-          path: bin/linux/${{ matrix.arch }}/
+          path: addons/audio_recognition/linux/
