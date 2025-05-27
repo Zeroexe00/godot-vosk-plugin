@@ -49,6 +49,7 @@ jobs:
           GODOT_SDK_LINUX_X86_32=/${pwd}/i686-godot-linux-gnu_sdk-buildroot
           GODOT_SDK_LINUX_ARM64=/${pwd}/aarch64-godot-linux-gnu_sdk-buildroot
           GODOT_SDK_LINUX_ARM32=/${pwd}/arm-godot-linux-gnueabihf_sdk-buildroot
+          $CXX --version
           ls -la
           if [ "$ARCH" = "arm" ]; then
             SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
