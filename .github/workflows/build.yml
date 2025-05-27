@@ -50,7 +50,7 @@ jobs:
           else
             SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
           fi
-          cd ${SDK_DIR}
+          cd ${SDK_DIR}/aarch64-godot-linux-gnu
           ls -la
           source ${SDK_DIR}/environment-setup
           scons platform=linux target=template_release arch=$ARCH
