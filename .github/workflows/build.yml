@@ -54,7 +54,7 @@ jobs:
             SDK_DIR="arm-godot-linux-gnueabihf_sdk-buildroot"
             SDK_SUBMODULE_DIR="arm-godot-linux-gnueabihf_sdk-buildroot/arm-godot-linux-gnueabihf"
             ARCH_GODOT="arm64"
-          elseif [ "$ARCH" = "aarch64" ]; then
+          elif [ "$ARCH" = "aarch64" ]; then
             SDK_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot"
             SDK_SUBMODULE_DIR="${ARCH}-godot-linux-gnu_sdk-buildroot/${ARCH}-godot-linux-gnu"
             ARCH_GODOT="x86_64"
